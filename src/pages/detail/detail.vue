@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <img class="detail_img" :src="detailObj.detail_img" alt />
+    <img class="detail_img" :src="isMusic ? detailObj.music.coverImgUrl : detailObj.detail_img" alt />
+    <img @tap="music" class="music_img" :src="isMusic ? '/static/images/music/music-start  .png' : '/static/images/music/music-stop.png'"/>
     <div class="avatar_data">
       <img :src="detailObj.avatar" alt />
       <span>{{detailObj.author}}</span>
@@ -20,12 +21,14 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from "vuex"
+import isPlayObj from '../../datas/isPlay.js'
 export default {
   data() {
     return {
       detailObj: {}, // 每一个详情页面对象的数据
-      isCollected: false // 是否收藏
+      isCollected: false, // 是否收藏
+      isMusic: false
     };
   },
   mounted() {
@@ -41,6 +44,19 @@ export default {
     } else { // 当用户缓存过时，oldStorage[this.index] = true || false || undefined
       this.isCollected = (oldStorage[this.index] ? true : false)
     }
+    (isPlayObj.pageIndex === this.index && isPlayObj.isPlay) ? this.isMusic = true : this.isMusic = false
+    // 监听音乐的播放和暂停
+    wx.onBackgroundAudioPlay(() => {
+      console.log('音乐播放')
+      this.isMusic = true
+      isPlayObj.pageIndex = this.index
+      isPlayObj.isPlay = true
+    })
+    wx.onBackgroundAudioPause(() => {
+      console.log('音乐暂停')
+      this.isMusic = false
+      isPlayObj.isPlay = false
+    })
   },
   methods: {
     // 点击收藏或取消收藏
@@ -63,8 +79,22 @@ export default {
         key: 'isCollected',
         data: oldStorage
       });
-    }
-  },
+    },
+    // 点击播放音乐
+    music () {
+      let isMusic = !this.isMusic
+      this.isMusic = isMusic
+      let { dataUrl, title } = this.detailObj.music
+      if (isMusic) {
+        wx.playBackgroundAudio({ // 使用后台播放器播放音乐
+          dataUrl,
+          title
+        })
+      } else { // 暂停播放音乐
+        wx.pauseBackgroundAudio()
+      }
+    } 
+ },
   computed: {
     ...mapState(['list'])
   }
@@ -78,6 +108,15 @@ export default {
 .detail_img {
   width: 100%;
   height: 460rpx;
+}
+.music_img {
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50%;
+  margin-left: -50%;
 }
 .avatar_data {
   padding: 10rpx;
