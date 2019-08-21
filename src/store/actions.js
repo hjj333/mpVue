@@ -4,7 +4,7 @@ export default {
     getList({ commit }) {
         commit(RECEIVE_LIST, data)
     },
-    getMovies({ commit }, data) {
-        commit(RECEIVE_MOVIES, data)
+    getMovies({ commit }, moviesData) {
+        commit(RECEIVE_MOVIES, moviesData)
     }
 }

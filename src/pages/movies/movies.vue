@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-const MOVIES_URL = 'http://t.yushu.im/v2/movies/top250'
+const MOVIES_URL = 'http://t.yushu.im/v2/movie/top250';
 export default {
   data() {
     return {
@@ -20,15 +20,14 @@ export default {
     };
   },
   mounted() {
-    this.$fly
-      .get(MOVIES_URL)
+    this.$fly.get(MOVIES_URL)
       .then(response => {
         let moviesArr = response.data.subjects
         this.$store.dispatch('getMovies', moviesArr)
         this.moviesArr = moviesArr
       })
       .catch(error => {
-        console.log(error);
+        console.log(error)
       })
   },
   methods: {

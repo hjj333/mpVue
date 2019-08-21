@@ -3,7 +3,7 @@ export default {
     [RECEIVE_LIST] (state, { list_data }) {
         state.list = list_data
     },
-    [RECEIVE_MOVIES] (state, data) {
-        state.movies = data
+    [RECEIVE_MOVIES] (state, moviesData) {
+        state.movies = moviesData
     }
 }

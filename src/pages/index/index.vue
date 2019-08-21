@@ -13,38 +13,39 @@ export default {
   data() {
     return {
       userInfo: {},
-      isShow: false
+      isShow: false // 是否授权
     };
   },
   beforeMount() {
     // 查看是否授权
     wx.getSetting({
-      success: res => {
-        if (res.authSetting["scope.userInfo"]) {
-          // 已经授权，可以直接调用getUserInfo
-          wx.getUserInfo({
-            success: data => {
-            },
-            fail: () => {
-              console.log("shibai")
-            }
-          })
+      success() {
+        res => {
+          if (res.authSetting["scope.userInfo"]) {
+            // 已经授权，可以直接调用getUserInfo
+            wx.getUserInfo({
+              success: e => {
+                this.isShow = true;
+                this.userInfo = e.mp.detail.userInfo;
+              }
+            })
+          }
         }
-      },
-      fail: () => {
-        console.log("shibai")
       }
-    });
+    })
   },
   methods: {
     getUserInfo(e) {
-      this.isShow = true
-      this.userInfo = e.mp.detail.userInfo
+      if (e.mp.detail.rawData) {
+        // 点击确认用户授权
+        this.isShow = true;
+        this.userInfo = e.mp.detail.userInfo;
+      }
     },
-    toDetail () {
+    toDetail() {
       wx.switchTab({
         url: "/pages/list/main"
-      })
+      });
     }
   }
 };
