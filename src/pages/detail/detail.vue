@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <img class="detail_img" :src="isMusic ? detailObj.music.coverImgUrl : detailObj.detail_img" alt />
-    <img @tap="music" class="music_img" :src="isMusic ? '/static/images/music/music-start  .png' : '/static/images/music/music-stop.png'"/>
+    <img @tap="music" class="music_img" :src="isMusic ? '/static/images/music/music-start.png' : '/static/images/music/music-stop.png'"/>
     <div class="avatar_data">
       <img :src="detailObj.avatar" alt />
       <span>{{detailObj.author}}</span>
@@ -113,10 +113,9 @@ export default {
   width: 60rpx;
   height: 60rpx;
   position: absolute;
-  top: 50%;
+  top: 200rpx;
   left: 50%;
-  margin-top: -50%;
-  margin-left: -50%;
+  margin-left: -30rpx;
 }
 .avatar_data {
   padding: 10rpx;

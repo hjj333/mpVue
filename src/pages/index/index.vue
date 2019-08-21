@@ -24,27 +24,25 @@ export default {
           // 已经授权，可以直接调用getUserInfo
           wx.getUserInfo({
             success: data => {
-              console.log(data);
             },
             fail: () => {
-              console.log("shibai");
+              console.log("shibai")
             }
-          });
+          })
         }
       },
       fail: () => {
-        console.log("shibai");
+        console.log("shibai")
       }
     });
   },
   methods: {
     getUserInfo(e) {
-      console.log(e.mp.detail.userInfo);
-      this.isShow = true;
-      this.userInfo = e.mp.detail.userInfo;
+      this.isShow = true
+      this.userInfo = e.mp.detail.userInfo
     },
     toDetail () {
-      wx.navigateTo({
+      wx.switchTab({
         url: "/pages/list/main"
       })
     }

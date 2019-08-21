@@ -1,4 +1,4 @@
 import Vue from 'vue'
 import List from './List.vue'
-const list = new Vue(List)
-list.$mount()
+const app = new Vue(List)
+app.$mount()
